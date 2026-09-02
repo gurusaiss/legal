@@ -1,0 +1,106 @@
+{
+  "version": "2011_base",
+  "effective_from": "2011-03-01",
+  "effective_to": "2012-06-13",
+  "citation": "Legal Metrology (Packaged Commodities) Rules, 2011",
+  "declarations": [
+    {
+      "field": "manufacturer_name_address",
+      "label": "Name and address of manufacturer/packer/importer",
+      "rule_ref": "Rule 6(1)(a)",
+      "required": true,
+      "type": "text",
+      "min_length": 8,
+      "keywords": ["mfg by", "manufactured by", "packed by", "marketed by", "imported by", "mktd by"]
+    },
+    {
+      "field": "common_name",
+      "label": "Common or generic name of the commodity",
+      "rule_ref": "Rule 6(1)(b)",
+      "required": true,
+      "type": "text",
+      "min_length": 2,
+      "keywords": ["common name", "generic name", "name of commodity"]
+    },
+    {
+      "field": "net_quantity",
+      "label": "Net quantity in standard units (weight/volume/number)",
+      "rule_ref": "Rule 6(1)(c) & Rule 8",
+      "required": true,
+      "type": "quantity",
+      "units": ["g", "kg", "ml", "l", "litre", "gm", "mg", "n", "pcs", "pieces"],
+      "keywords": ["net wt", "net weight", "net qty", "net quantity", "net vol", "net volume", "contents"]
+    },
+    {
+      "field": "mrp",
+      "label": "Maximum Retail Price inclusive of all taxes",
+      "rule_ref": "Rule 6(1)(e) & Rule 18",
+      "required": true,
+      "type": "price",
+      "must_contain": ["incl", "inclusive of all taxes"],
+      "keywords": ["mrp", "maximum retail price", "m.r.p", "rs.", "₹"]
+    },
+    {
+      "field": "manufacture_date",
+      "label": "Month and year of manufacture/packing/import",
+      "rule_ref": "Rule 6(1)(f)",
+      "required": true,
+      "type": "date",
+      "keywords": ["mfg date", "mfd", "date of manufacture", "packed on", "pkd", "month & year of packing", "manufacturing date"]
+    },
+    {
+      "field": "consumer_care",
+      "label": "Name, address, telephone/email of consumer care",
+      "rule_ref": "Rule 6(1)(g)",
+      "required": true,
+      "type": "text",
+      "keywords": ["consumer care", "customer care", "for complaints", "toll free", "email", "e-mail", "helpline"]
+    },
+    {
+      "field": "country_of_origin",
+      "label": "Country of origin (for imported goods)",
+      "rule_ref": "Rule 6(1)(a) proviso",
+      "required": false,
+      "type": "text",
+      "keywords": ["country of origin", "made in", "product of"],
+      "conditional": "imported_only"
+    },
+    {
+      "field": "unit_sale_price",
+      "label": "Unit sale price (price per standard unit)",
+      "rule_ref": "Rule 6(1)(d)",
+      "required": false,
+      "type": "price",
+      "keywords": ["unit sale price", "price per", "rate per"],
+      "conditional": "loose_or_multipack"
+    },
+    {
+      "field": "dimensions",
+      "label": "Number/dimensions of the commodity, where applicable",
+      "rule_ref": "Rule 6(1)(c) explanation",
+      "required": false,
+      "type": "text",
+      "keywords": ["dimensions", "size", "no. of pieces", "count"],
+      "conditional": "dimension_applicable"
+    },
+    {
+      "field": "best_before_or_use_by",
+      "label": "Best before / use by date, where applicable (food & drugs)",
+      "rule_ref": "Rule 6(1)(f) read with category-specific rules",
+      "required": false,
+      "type": "date",
+      "keywords": ["best before", "use by", "expiry", "exp date", "expires on"],
+      "conditional": "perishable_or_food"
+    }
+  ],
+  "font_size_rules": {
+    "description": "Rule 7 / Second Schedule: minimum font size for net quantity declaration scales with pack area.",
+    "bands": [
+      {"max_area_cm2": 100, "min_height_mm": 1},
+      {"max_area_cm2": 500, "min_height_mm": 2},
+      {"max_area_cm2": 2500, "min_height_mm": 4},
+      {"max_area_cm2": null, "min_height_mm": 6}
+    ],
+    "applies_to_fields": ["net_quantity", "mrp"]
+  }
+}

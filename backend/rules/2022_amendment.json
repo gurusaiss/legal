@@ -1,0 +1,13 @@
+{
+  "version": "2022_amendment",
+  "effective_from": "2022-07-01",
+  "effective_to": null,
+  "citation": "Legal Metrology (Packaged Commodities) (Amendment) Rules, 2022",
+  "supersedes": "2017_amendment",
+  "changes": [
+    "Standard pack sizes rationalized/deregulated for several categories (informational only, not label-verifiable from an image).",
+    "QR code / digital declaration permitted as a supplementary channel alongside printed declarations — printed mandatory fields remain required."
+  ],
+  "declarations_override": [],
+  "verification_note": "Placeholder entry so the rule-version timeline stays contiguous. Team must confirm exact operative clauses against the gazette notification before relying on this band for enforcement decisions."
+}

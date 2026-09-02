@@ -1,0 +1,45 @@
+{
+  "version": "2017_amendment",
+  "effective_from": "2018-01-01",
+  "effective_to": "2022-06-30",
+  "citation": "Legal Metrology (Packaged Commodities) (Amendment) Rules, 2017",
+  "supersedes": "2011_base",
+  "changes": [
+    "MRP declaration must explicitly state 'inclusive of all taxes' or equivalent.",
+    "Unit sale price becomes mandatory for multi-piece/multipack retail packages.",
+    "Manufacturer/packer/importer declaration must additionally carry a pincode.",
+    "E-commerce listings (2020 clarification) must carry all Rule 6 declarations on the listing page itself, not only on the physical package."
+  ],
+  "declarations_override": [
+    {
+      "field": "mrp",
+      "label": "Maximum Retail Price inclusive of all taxes",
+      "rule_ref": "Rule 6(1)(e) as amended 2017",
+      "required": true,
+      "type": "price",
+      "must_contain": ["incl", "inclusive of all taxes"],
+      "keywords": ["mrp", "maximum retail price", "m.r.p", "rs.", "₹"]
+    },
+    {
+      "field": "unit_sale_price",
+      "label": "Unit sale price (price per standard unit)",
+      "rule_ref": "Rule 6(1)(d) as amended 2017",
+      "required": true,
+      "type": "price",
+      "keywords": ["unit sale price", "price per", "rate per"],
+      "conditional": "loose_or_multipack",
+      "note": "required flag applies only when the loose/multipack condition holds; conditional fields are never auto-failed from OCR alone"
+    },
+    {
+      "field": "manufacturer_name_address",
+      "label": "Name, address and PIN code of manufacturer/packer/importer",
+      "rule_ref": "Rule 6(1)(a) as amended 2017",
+      "required": true,
+      "type": "text",
+      "min_length": 8,
+      "requires_pincode": true,
+      "keywords": ["mfg by", "manufactured by", "packed by", "marketed by", "imported by", "mktd by"]
+    }
+  ],
+  "verification_note": "Amendment text summarized from public DoCA notifications for hackathon prototyping. MUST be cross-verified against the official e-Gazette notification before any production/legal use."
+}

@@ -1,0 +1,35 @@
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - backend_data:/app/uploads
+      - backend_reports:/app/reports
+      - backend_db:/app/db
+    environment:
+      # Override in production — this default is fine for local/demo use only.
+      - LM_JWT_SECRET=${LM_JWT_SECRET:-dev-secret-change-in-production}
+      - LM_DATABASE_URL=sqlite:////app/db/legal_metrology.db
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        # The browser calls this directly, so it must be reachable from the host,
+        # not the Docker network — hence localhost:8000, not http://backend:8000.
+        VITE_API_BASE: http://localhost:8000
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend
+
+volumes:
+  backend_data:
+  backend_reports:
+  backend_db:
