@@ -114,7 +114,31 @@ npm run dev
 
 Opens on `http://localhost:5173`, talks to the backend on `http://127.0.0.1:8000`.
 
-### Deployment (Docker)
+### Deployment — live link (Render + Vercel)
+
+This is the path used for the actual hosted demo.
+
+1. **Push this repo to GitHub** (`git remote add origin <url> && git push -u origin master`).
+2. **Backend → Render**: New → Blueprint → point it at the GitHub repo. Render
+   reads [`render.yaml`](render.yaml) automatically — it builds
+   `backend/Dockerfile`, mounts a persistent Disk at `/data`, and generates
+   `LM_JWT_SECRET` for you. `LM_DATABASE_URL`, `LM_UPLOADS_DIR` and
+   `LM_REPORTS_DIR` all point at that disk (see `backend/app/paths.py`) so
+   scans, images and reports survive restarts and redeploys — the `starter`
+   plan is required for this (Render's free tier has no persistent disk, so
+   the DB and uploads would reset on every redeploy). Note the resulting
+   backend URL, e.g. `https://legal-metrology-backend.onrender.com`.
+3. **Frontend → Vercel**: import the repo, set the root directory to
+   `frontend`, and set the env var `VITE_API_BASE` to the Render URL from
+   step 2. Vercel auto-detects the Vite build. Deploy — this is the link you
+   actually share.
+4. **Close the loop**: back on Render, set `LM_ALLOWED_ORIGINS` to the Vercel
+   URL from step 3 (comma-separated if there's more than one, e.g. a preview
+   + production URL) and redeploy the backend — otherwise the browser blocks
+   every API call from the frontend as a CORS violation. See
+   `backend/app/main.py` for how this is read.
+
+### Deployment (Docker, self-hosted / local)
 
 ```bash
 docker compose up --build
