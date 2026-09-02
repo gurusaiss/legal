@@ -2,32 +2,24 @@
 # automatically ("New +" -> "Blueprint"). Defines the backend only; the
 # frontend is deployed separately on Vercel (see README "Deployment").
 #
-# The `starter` plan (not `free`) is used deliberately: Render's persistent
-# Disks require a paid instance. Without one, the SQLite DB, uploaded
-# images and generated reports are wiped on every restart/redeploy — see
-# app/paths.py and the LM_DATABASE_URL below, which all point at the same
-# mounted disk so nothing is left on the ephemeral container filesystem.
+# `free` plan, no disk — chosen so this deploys without a card on file.
+# Trade-off: Render's free tier has no persistent disk, so the SQLite DB,
+# uploaded images and generated reports all live on the container's
+# ephemeral filesystem and are wiped on every restart/redeploy (and free
+# instances also spin down after ~15 min idle, adding a cold-start delay
+# on the next request). Fine for a demo; switch `plan` to `starter` and
+# add a `disk:` block (see git history) if you need scans to persist.
 services:
   - type: web
     name: legal-metrology-backend
     runtime: docker
-    plan: starter
+    plan: free
     dockerfilePath: ./backend/Dockerfile
     dockerContext: ./backend
     healthCheckPath: /health
-    disk:
-      name: lm-data
-      mountPath: /data
-      sizeGB: 1
     envVars:
       - key: LM_JWT_SECRET
         generateValue: true
-      - key: LM_DATABASE_URL
-        value: sqlite:////data/db/legal_metrology.db
-      - key: LM_UPLOADS_DIR
-        value: /data/uploads
-      - key: LM_REPORTS_DIR
-        value: /data/reports
       - key: LM_ALLOWED_ORIGINS
         value: ""
         # Set this to your Vercel URL after deploying the frontend, e.g.
